@@ -1,6 +1,8 @@
 use std::borrow::Cow;
 use std::fs::File;
 use std::io::{BufReader, Read};
+#[cfg(unix)]
+use std::os::unix::fs::PermissionsExt;
 use std::path::{Path, PathBuf};
 
 use anyhow::{anyhow, Result};
@@ -76,4 +78,19 @@ pub fn read_file<P: AsRef<Path>>(path: P) -> Result<String> {
     let mut contents = String::new();
     buf_reader.read_to_string(&mut contents)?;
     Ok(contents)
+}
+
+/// Check if a file is executable
+pub fn is_executable(path: &Path) -> Option<bool> {
+    if cfg!(unix) {
+        if let Ok(metadata) = path.metadata() {
+            let permissions = metadata.permissions();
+            let mode = permissions.mode();
+            Some(mode & 0o111 != 0)
+        } else {
+            None
+        }
+    } else {
+        None
+    }
 }

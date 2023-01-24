@@ -1,4 +1,3 @@
-use std::os::unix::prelude::MetadataExt;
 use std::path::Path;
 
 use ruff_macros::derive_message_formats;
@@ -6,6 +5,7 @@ use rustpython_ast::Location;
 
 use crate::ast::types::Range;
 use crate::define_violation;
+use crate::fs::is_executable;
 use crate::registry::Diagnostic;
 use crate::rules::flake8_executable::helpers::ShebangDirective;
 use crate::violation::Violation;
@@ -27,9 +27,11 @@ pub fn shebang_not_executable(
     shebang: &ShebangDirective,
 ) -> Option<Diagnostic> {
     if let ShebangDirective::Match(_, start, end, _) = shebang {
-        if let Ok(metadata) = filepath.metadata() {
+        if let Some(executable) = is_executable(filepath) {
             // Check if file is executable by anyone
-            if metadata.mode() & 0o111 == 0 {
+            if executable {
+                None
+            } else {
                 let diagnostic = Diagnostic::new(
                     ShebangNotExecutable,
                     Range::new(
@@ -38,8 +40,6 @@ pub fn shebang_not_executable(
                     ),
                 );
                 Some(diagnostic)
-            } else {
-                None
             }
         } else {
             None

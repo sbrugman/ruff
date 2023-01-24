@@ -1,10 +1,10 @@
-use std::os::unix::prelude::MetadataExt;
 use std::path::Path;
 
 use ruff_macros::derive_message_formats;
 
 use crate::ast::types::Range;
 use crate::define_violation;
+use crate::fs::is_executable;
 use crate::registry::Diagnostic;
 use crate::violation::Violation;
 
@@ -20,13 +20,13 @@ impl Violation for ShebangMissingExecutableFile {
 
 /// EXE002
 pub fn shebang_missing(filepath: &Path) -> Option<Diagnostic> {
-    if let Ok(metadata) = filepath.metadata() {
-        // Check if file is executable by anyone
-        if metadata.mode() & 0o111 == 0 {
-            None
-        } else {
+    // Check if file is executable by anyone
+    if let Some(executable) = is_executable(filepath) {
+        if executable {
             let diagnostic = Diagnostic::new(ShebangMissingExecutableFile, Range::default());
             Some(diagnostic)
+        } else {
+            None
         }
     } else {
         None
