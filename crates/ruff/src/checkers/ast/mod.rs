@@ -1466,6 +1466,12 @@ where
                 if self.enabled(Rule::RedefinedLoopName) {
                     pylint::rules::redefined_loop_name(self, stmt);
                 }
+                if self.enabled(Rule::WriteBlock) {
+                    flake8_use_pathlib::rules::write_block(self, stmt);
+                }
+                if self.enabled(Rule::ReadBlock) {
+                    flake8_use_pathlib::rules::read_block(self, stmt, items, body);
+                }
             }
             Stmt::While(ast::StmtWhile { body, orelse, .. }) => {
                 if self.enabled(Rule::FunctionUsesLoopVariable) {
