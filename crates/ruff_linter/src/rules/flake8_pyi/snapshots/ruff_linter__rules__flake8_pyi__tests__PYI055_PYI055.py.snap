@@ -79,12 +79,12 @@ PYI055.py:47:9: PYI055 [*] Multiple `type` members in a union. Combine them into
 49 49 |     ...
 50 50 | 
 
-PYI055.py:53:15: PYI055 [*] Multiple `type` members in a union. Combine them into one, e.g., `type[_T | Converter[_T]]`.
+PYI055.py:53:9: PYI055 [*] Multiple `type` members in a union. Combine them into one, e.g., `type[Union[_T, Converter[_T]]]`.
    |
 51 | def convert_union(union: UnionType) -> _T | None:
 52 |     converters: tuple[
 53 |         Union[type[_T] | type[Converter[_T]] | Converter[_T] | Callable[[str], _T]], ...  # PYI055
-   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ PYI055
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ PYI055
 54 |     ] = union.__args__
 55 |     ...
    |
@@ -95,17 +95,17 @@ PYI055.py:53:15: PYI055 [*] Multiple `type` members in a union. Combine them int
 51 51 | def convert_union(union: UnionType) -> _T | None:
 52 52 |     converters: tuple[
 53    |-        Union[type[_T] | type[Converter[_T]] | Converter[_T] | Callable[[str], _T]], ...  # PYI055
-   53 |+        Union[type[_T | Converter[_T]] | Converter[_T] | Callable[[str], _T]], ...  # PYI055
+   53 |+        Union[type[Union[_T, Converter[_T]]], Converter[_T], Callable[[str], _T]], ...  # PYI055
 54 54 |     ] = union.__args__
 55 55 |     ...
 56 56 | 
 
-PYI055.py:59:15: PYI055 [*] Multiple `type` members in a union. Combine them into one, e.g., `type[_T | Converter[_T]]`.
+PYI055.py:59:9: PYI055 [*] Multiple `type` members in a union. Combine them into one, e.g., `type[_T | Converter[_T]]`.
    |
 57 | def convert_union(union: UnionType) -> _T | None:
 58 |     converters: tuple[
 59 |         Union[type[_T] | type[Converter[_T]]] | Converter[_T] | Callable[[str], _T], ...  # PYI055
-   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ PYI055
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ PYI055
 60 |     ] = union.__args__
 61 |     ...
    |
@@ -116,17 +116,17 @@ PYI055.py:59:15: PYI055 [*] Multiple `type` members in a union. Combine them int
 57 57 | def convert_union(union: UnionType) -> _T | None:
 58 58 |     converters: tuple[
 59    |-        Union[type[_T] | type[Converter[_T]]] | Converter[_T] | Callable[[str], _T], ...  # PYI055
-   59 |+        Union[type[_T | Converter[_T]]] | Converter[_T] | Callable[[str], _T], ...  # PYI055
+   59 |+        type[_T | Converter[_T]] | Converter[_T] | Callable[[str], _T], ...  # PYI055
 60 60 |     ] = union.__args__
 61 61 |     ...
 62 62 | 
 
-PYI055.py:65:15: PYI055 [*] Multiple `type` members in a union. Combine them into one, e.g., `type[_T | Converter[_T]]`.
+PYI055.py:65:9: PYI055 [*] Multiple `type` members in a union. Combine them into one, e.g., `type[_T | Converter[_T]]`.
    |
 63 | def convert_union(union: UnionType) -> _T | None:
 64 |     converters: tuple[
 65 |         Union[type[_T] | type[Converter[_T]] | str] | Converter[_T] | Callable[[str], _T], ...  # PYI055
-   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ PYI055
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ PYI055
 66 |     ] = union.__args__
 67 |     ...
    |
@@ -137,6 +137,6 @@ PYI055.py:65:15: PYI055 [*] Multiple `type` members in a union. Combine them int
 63 63 | def convert_union(union: UnionType) -> _T | None:
 64 64 |     converters: tuple[
 65    |-        Union[type[_T] | type[Converter[_T]] | str] | Converter[_T] | Callable[[str], _T], ...  # PYI055
-   65 |+        Union[type[_T | Converter[_T]] | str] | Converter[_T] | Callable[[str], _T], ...  # PYI055
+   65 |+        type[_T | Converter[_T]] | str | Converter[_T] | Callable[[str], _T], ...  # PYI055
 66 66 |     ] = union.__args__
 67 67 |     ...
