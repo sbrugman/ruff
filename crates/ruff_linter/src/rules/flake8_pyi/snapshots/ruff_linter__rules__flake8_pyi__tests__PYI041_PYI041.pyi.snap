@@ -25,20 +25,24 @@ PYI041.pyi:33:24: PYI041 Use `float` instead of `int | float`
    |                        ^^^^^^^^^^^^^^^^^ PYI041
    |
 
-PYI041.pyi:39:24: PYI041 Use `complex` instead of `float | complex`
+PYI041.pyi:36:26: PYI041 Use `float` instead of `int | float`
    |
-37 |     def good(self, arg: int) -> None: ...
-38 | 
-39 |     def bad(self, arg: int | float | complex) -> None: ...  # PYI041
+36 | def f5(arg1: int, *args: Union[int, int, float]) -> None: ...  # PYI041
+   |                          ^^^^^^^^^^^^^^^^^^^^^^ PYI041
+   |
+
+PYI041.pyi:51:24: PYI041 Use `complex` instead of `float | complex`
+   |
+49 |     def good(self, arg: int) -> None: ...
+50 | 
+51 |     def bad(self, arg: int | float | complex) -> None: ...  # PYI041
    |                        ^^^^^^^^^^^^^^^^^^^^^ PYI041
    |
 
-PYI041.pyi:39:24: PYI041 Use `complex` instead of `int | complex`
+PYI041.pyi:51:24: PYI041 Use `complex` instead of `int | complex`
    |
-37 |     def good(self, arg: int) -> None: ...
-38 | 
-39 |     def bad(self, arg: int | float | complex) -> None: ...  # PYI041
+49 |     def good(self, arg: int) -> None: ...
+50 | 
+51 |     def bad(self, arg: int | float | complex) -> None: ...  # PYI041
    |                        ^^^^^^^^^^^^^^^^^^^^^ PYI041
    |
-
-

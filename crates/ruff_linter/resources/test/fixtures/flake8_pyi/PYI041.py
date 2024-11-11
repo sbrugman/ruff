@@ -39,6 +39,22 @@ async def f4(**kwargs: int | int | float) -> None:
     ...
 
 
+def f5(arg1: int, *args: Union[int, int, float]) -> None: 
+    ...
+
+
+def f6(arg1: int, *args: Union[Union[int, int, float]]) -> None: 
+    ...
+
+
+def f7(arg1: int, *args: Union[Union[Union[int, int, float]]]) -> None: 
+    ...
+
+
+def f8(arg1: int, *args: Union[Union[Union[int | int | float]]]) -> None: 
+    ...
+
+
 class Foo:
     def good(self, arg: int) -> None:
         ...
